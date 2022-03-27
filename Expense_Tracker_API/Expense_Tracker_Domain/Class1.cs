@@ -1,4 +1,4 @@
-﻿namespace EXpense_Tracker_Data
+﻿namespace Expense_Tracker_Domain
 {
     public class Class1
     {
