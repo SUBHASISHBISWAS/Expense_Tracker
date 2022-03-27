@@ -1,7 +1,7 @@
 ﻿using Expense_Tracker_Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace EXpense_Tracker_Data
+namespace Expense_Tracker_Data
 {
     public class ExpenseContext:DbContext
     {
@@ -13,6 +13,7 @@ namespace EXpense_Tracker_Data
 
         public DbSet<Card>? Cards { get; set; }
 
+        public ExpenseContext(DbContextOptions<ExpenseContext> option) : base(option) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(connectionString);
