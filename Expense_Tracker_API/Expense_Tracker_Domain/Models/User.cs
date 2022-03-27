@@ -12,8 +12,8 @@ namespace Expense_Tracker_Domain.Model
 
         public string? Name { get; set; }
 
-        public List<Expense> Expenses { get; set; } = new List<Expense>();
+        public List<Expense>? Expenses { get; set; } = new List<Expense>();
 
-        public List<Card> Cards { get; set; }=new List<Card>();
+        public List<Card>? Cards { get; set; }=new List<Card>();
     }
 }

@@ -22,8 +22,6 @@ namespace Expense_Tracker_Domain.Model
 
         public DateTime? CardStatementDate  { get; set; }
 
-        public User? User { get; set; }
-
         public List<Expense>? Expenses { get; set; }=new List<Expense> { };
 
         
