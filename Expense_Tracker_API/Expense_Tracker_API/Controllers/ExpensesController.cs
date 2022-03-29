@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EXpense_Tracker_Data;
 using Expense_Tracker_Domain.Model;
 using Expense_Tracker_Data;
 

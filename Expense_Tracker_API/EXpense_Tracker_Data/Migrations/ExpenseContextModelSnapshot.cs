@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EXpense_Tracker_Data.Migrations
+namespace Expense_Tracker_Data.Migrations
 {
     [DbContext(typeof(ExpenseContext))]
     partial class ExpenseContextModelSnapshot : ModelSnapshot

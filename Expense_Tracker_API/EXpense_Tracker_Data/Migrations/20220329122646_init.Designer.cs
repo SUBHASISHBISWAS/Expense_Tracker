@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EXpense_Tracker_Data.Migrations
+namespace Expense_Tracker_Data.Migrations
 {
     [DbContext(typeof(ExpenseContext))]
-    [Migration("20220327155239_init_V4")]
-    partial class init_V4
+    [Migration("20220329122646_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
