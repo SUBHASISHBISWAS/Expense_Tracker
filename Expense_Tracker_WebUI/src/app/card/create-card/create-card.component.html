@@ -6,16 +6,61 @@
   <mat-card-content>
     <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
       <mat-form-field>
-        <input matInput placeholder="Card Name" formControlName="name" />
+        <input matInput placeholder="Card Name" formControlName="cardName" />
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Card Number" formControlName="number" />
+        <input
+          matInput
+          placeholder="Card Number"
+          formControlName="cardNumber"
+        />
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Card Expiry" formControlName="expiry" />
+        <input
+          matInput
+          placeholder="Card Description"
+          formControlName="cardDescription"
+        />
       </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Card CVV" formControlName="cvv" />
+      <mat-form-field appearance="fill">
+        <mat-label>Card Type</mat-label>
+        <mat-select [(ngModel)]="selectedCard" formControlName="cardType">
+          <mat-option
+            *ngFor="let cardType of cardTypes"
+            [value]="cardType.value"
+          >
+            {{ cardType.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Statement Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="statementPicker"
+          formControlName="cardStatement"
+          (dateChange)="onCardStatementDateChange($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="statementPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #statementPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Expiry Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="expiryPicker"
+          formControlName="cardExpiry"
+          (dateChange)="onCardExpiryDateChange($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="expiryPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #expiryPicker></mat-datepicker>
       </mat-form-field>
       <button
         mat-raised-button
