@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-title>
+    <h1>Create Card</h1>
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input matInput placeholder="Card Name" formControlName="name" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Card Number" formControlName="number" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Card Expiry" formControlName="expiry" />
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Card CVV" formControlName="cvv" />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!cardForm.valid"
+      >
+        Create Card
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
