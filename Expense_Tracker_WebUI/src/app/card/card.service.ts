@@ -24,21 +24,19 @@ import { DatePipe } from '@angular/common';
 export class CardService {
   private cardCreatedSubject = new Subject<Card>();
   private createCardAction$ = this.cardCreatedSubject.asObservable();
-  private cards$ = this.http
-    .get<Card[]>('http://localhost:5099/api/Cards')
-    .pipe(
-      map((cards) =>
-        cards.map(
-          (card) =>
-            ({
-              ...card,
-              cardId: card.cardId,
-            } as Card)
-        )
-      ),
-      tap((cards) => console.log('fetched cards', JSON.stringify(cards))),
-      catchError(this.handelErrors)
-    );
+  private cards$ = this.http.get<any[]>('http://localhost:5099/api/Cards').pipe(
+    map((cards) =>
+      cards.map(
+        (card) =>
+          ({
+            ...card,
+            cardId: card.id,
+          } as Card)
+      )
+    ),
+    tap((cards) => console.log('fetched cards', JSON.stringify(cards))),
+    catchError(this.handelErrors)
+  );
 
   cardsWithCreateCardAction$ = merge(this.cards$, this.createCardAction$).pipe(
     scan((acc, value) => {
@@ -65,9 +63,17 @@ export class CardService {
     cardData.append('cardStatementDate', cardStatementDate!);
 
     this.http
-      .post<Card>('http://localhost:5099/api/Cards', cardData)
-      .pipe(tap((card) => console.log('created card', JSON.stringify(card))))
-      .subscribe(() => {
+      .post<any>('http://localhost:5099/api/Cards', cardData)
+      .pipe(
+        map((card) => {
+          return {
+            ...card,
+            cardId: card.id,
+          } as Card;
+        }),
+        tap((card) => console.log('created card', JSON.stringify(card)))
+      )
+      .subscribe((card) => {
         console.log(card!.cardId);
         this.cardCreatedSubject.next(card!);
       });

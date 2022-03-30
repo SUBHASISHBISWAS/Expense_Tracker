@@ -47,8 +47,6 @@ export class CreateCardComponent implements OnInit {
       return;
     }
     this.cardService.createCard(this.cardForm.value);
-    console.log(this.cardForm.value);
-    console.log(new Date(this.cardForm.value.cardExpiry).toLocaleDateString());
   }
 
   onCardExpiryDateChange(event: any): void {

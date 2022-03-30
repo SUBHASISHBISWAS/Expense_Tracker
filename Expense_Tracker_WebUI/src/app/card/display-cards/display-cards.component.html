@@ -1,7 +1,7 @@
 <mat-accordion *ngIf="cards$ | async as cards">
   <mat-expansion-panel *ngFor="let card of cards">
     <mat-expansion-panel-header>
-      {{ card.cardName }}
+      {{ card.cardId }}
     </mat-expansion-panel-header>
 
     <p>{{ card.cardNumber }}</p>
