@@ -77,8 +77,9 @@ namespace Expense_Tracker_API.Controllers
         // POST: api/Cards
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Card>> PostCard(Card card)
+        public async Task<ActionResult<Card>> PostCard([FromForm]Card card)
         {
+            card.Id = new Guid();
             _context.Cards.Add(card);
             await _context.SaveChangesAsync();
 

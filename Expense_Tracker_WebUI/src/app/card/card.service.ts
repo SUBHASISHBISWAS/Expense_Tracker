@@ -9,7 +9,11 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Card } from './models/card';
 import { Router } from '@angular/router';
 
@@ -18,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class CardService {
   private cardCreatedSubject = new Subject<Card>();
-  cardCreateAction$ = this.cardCreatedSubject.asObservable();
+  private createCardAction$ = this.cardCreatedSubject.asObservable();
   private cards$ = this.http
     .get<Card[]>('http://localhost:5099/api/Cards')
     .pipe(
@@ -35,15 +39,29 @@ export class CardService {
       catchError(this.handelErrors)
     );
 
-  cardWithCreateAction$ = merge(this.cards$, this.cardCreateAction$).pipe(
+  cardsWithCreateCardAction$ = merge(this.cards$, this.createCardAction$).pipe(
     scan((acc, value) => {
       return value instanceof Array ? [...value] : [...acc, value];
     }, [] as Card[])
   );
 
   createCard(card?: Card) {
-    //card = this.fakeCard();
-    this.cardCreatedSubject.next(card!);
+    const cardData = new FormData();
+    cardData.append('cardName', card!.cardName);
+    cardData.append('cardNumber', card!.cardNumber);
+    cardData.append('cardDescription', card!.cardDescription!);
+    cardData.append('cardType', card!.cardType);
+    cardData.append('cardExpiry', card!.cardExpiryDate);
+    cardData.append('cardStatement', card!.cardStatementDate);
+    console.log(card!.cardStatementDate);
+    this.http
+      .post<Card>('http://localhost:5099/api/Cards', cardData)
+      .pipe(tap((card) => console.log('created card', JSON.stringify(card))))
+      .subscribe(() => {
+        console.log(card!.cardId);
+        this.cardCreatedSubject.next(card!);
+      });
+
     //this.router.navigate(['/']);
   }
 
@@ -54,8 +72,8 @@ export class CardService {
       cardNumber: '',
       cardDescription: '',
       cardType: '',
-      cardExpiry: new Date().toString(),
-      cardStatement: new Date().toString(),
+      cardExpiryDate: new Date().toString(),
+      cardStatementDate: new Date().toString(),
     };
   }
 

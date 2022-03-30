@@ -22,16 +22,16 @@ export class CreateCardComponent implements OnInit {
   ngOnInit(): void {
     this.cardForm = new FormGroup({
       cardName: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(0)],
       }),
       cardNumber: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(0)],
       }),
       cardType: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(0)],
       }),
       cardDescription: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(0)],
       }),
       cardExpiry: new FormControl('', {
         validators: [Validators.required],
@@ -47,6 +47,7 @@ export class CreateCardComponent implements OnInit {
       return;
     }
     this.cardService.createCard(this.cardForm.value);
+    //console.log(this.cardForm.value.statementDate.getDate());
   }
 
   onCardExpiryDateChange(event: any): void {
@@ -55,26 +56,6 @@ export class CreateCardComponent implements OnInit {
   onCardStatementDateChange(event: any): void {
     console.log(event.target.value);
   }
-  userAuthenticated: boolean = true;
-  errorMessage: string = '';
-  cardTypeSelectedSubject = new BehaviorSubject<string>('');
-  cardTypeSelectedAction$ = this.cardTypeSelectedSubject.asObservable();
-
-  cards$ = combineLatest([
-    this.cardService.cardWithCreateAction$,
-    this.cardTypeSelectedAction$,
-  ]).pipe(
-    map(([cards, cardTypeSelected]) => {
-      return cards.filter((card) =>
-        cardTypeSelected ? card.cardType === cardTypeSelected : true
-      );
-    }),
-    catchError((err) => {
-      this.errorMessage = err;
-      this.userAuthenticated = false;
-      return EMPTY;
-    })
-  );
 }
 
 interface CardType {

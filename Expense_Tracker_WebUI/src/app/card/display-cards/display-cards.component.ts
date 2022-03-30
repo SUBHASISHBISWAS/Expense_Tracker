@@ -28,7 +28,7 @@ export class DisplayCardsComponent implements OnInit {
   cardTypeSelectedAction$ = this.cardTypeSelectedSubject.asObservable();
 
   cards$ = combineLatest([
-    this.cardService.cardWithCreateAction$,
+    this.cardService.cardsWithCreateCardAction$,
     this.cardTypeSelectedAction$,
   ]).pipe(
     map(([cards, cardTypeSelected]) => {

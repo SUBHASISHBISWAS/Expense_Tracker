@@ -4,6 +4,6 @@ export interface Card {
   cardNumber: string;
   cardType: string;
   cardDescription?: string;
-  cardExpiry: string;
-  cardStatement: string;
+  cardExpiryDate: string;
+  cardStatementDate: string;
 }
