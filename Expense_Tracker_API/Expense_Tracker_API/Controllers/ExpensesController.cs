@@ -77,6 +77,7 @@ namespace Expense_Tracker_API.Controllers
         // POST: api/Expenses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Consumes("application/json")]
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
             _context.Expenses.Add(expense);

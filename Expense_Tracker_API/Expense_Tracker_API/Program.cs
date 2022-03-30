@@ -1,3 +1,4 @@
+using Expense_Tracker_API.Converters;
 using Expense_Tracker_Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,7 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new DateConverter());
+});
 
 builder.Services.AddDbContext<ExpenseContext>(option =>
 {

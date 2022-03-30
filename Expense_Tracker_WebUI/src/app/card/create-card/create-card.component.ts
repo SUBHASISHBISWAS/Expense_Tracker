@@ -33,10 +33,10 @@ export class CreateCardComponent implements OnInit {
       cardDescription: new FormControl('', {
         validators: [Validators.required, Validators.minLength(0)],
       }),
-      cardExpiry: new FormControl('', {
+      cardExpiryDate: new FormControl('', {
         validators: [Validators.required],
       }),
-      cardStatement: new FormControl('', {
+      cardStatementDate: new FormControl('', {
         validators: [Validators.required],
       }),
     });
@@ -47,7 +47,8 @@ export class CreateCardComponent implements OnInit {
       return;
     }
     this.cardService.createCard(this.cardForm.value);
-    //console.log(this.cardForm.value.statementDate.getDate());
+    console.log(this.cardForm.value);
+    console.log(new Date(this.cardForm.value.cardExpiry).toLocaleDateString());
   }
 
   onCardExpiryDateChange(event: any): void {

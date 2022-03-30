@@ -16,6 +16,7 @@ import {
 } from '@angular/common/http';
 import { Card } from './models/card';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -45,15 +46,24 @@ export class CardService {
     }, [] as Card[])
   );
 
-  createCard(card?: Card) {
+  createCard(card?: any) {
+    let cardExpiryDate = this.datePipe.transform(
+      new Date(card!.cardStatementDate).toString(),
+      'MM/dd/yyyy'
+    );
+    let cardStatementDate = this.datePipe.transform(
+      new Date(card!.cardStatementDate).toString(),
+      'MM/dd/yyyy'
+    );
+
     const cardData = new FormData();
     cardData.append('cardName', card!.cardName);
     cardData.append('cardNumber', card!.cardNumber);
     cardData.append('cardDescription', card!.cardDescription!);
     cardData.append('cardType', card!.cardType);
-    cardData.append('cardExpiry', card!.cardExpiryDate);
-    cardData.append('cardStatement', card!.cardStatementDate);
-    console.log(card!.cardStatementDate);
+    cardData.append('cardExpiryDate', cardExpiryDate!);
+    cardData.append('cardStatementDate', cardStatementDate!);
+
     this.http
       .post<Card>('http://localhost:5099/api/Cards', cardData)
       .pipe(tap((card) => console.log('created card', JSON.stringify(card))))
@@ -65,19 +75,11 @@ export class CardService {
     //this.router.navigate(['/']);
   }
 
-  private fakeCard(): Card {
-    return {
-      cardId: '',
-      cardName: '',
-      cardNumber: '',
-      cardDescription: '',
-      cardType: '',
-      cardExpiryDate: new Date().toString(),
-      cardStatementDate: new Date().toString(),
-    };
-  }
-
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private datePipe: DatePipe
+  ) {}
 
   private handelErrors(err: HttpErrorResponse): Observable<never> {
     let errorMessage = '';

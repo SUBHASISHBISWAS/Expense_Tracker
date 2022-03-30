@@ -24,5 +24,9 @@
 
   <ItemGroup>
     <None Remove="Microsoft.AspNet.WebApi.Cors" />
+    <None Remove="Converters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
   </ItemGroup>
 </Project>

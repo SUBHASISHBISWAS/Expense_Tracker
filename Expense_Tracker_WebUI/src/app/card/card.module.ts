@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CreateCardComponent } from './create-card/create-card.component';
 import { AngularMaterialModule } from '../angular-material/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,5 +18,6 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
   ],
   exports: [CreateCardComponent],
+  providers: [DatePipe],
 })
 export class CardModule {}
