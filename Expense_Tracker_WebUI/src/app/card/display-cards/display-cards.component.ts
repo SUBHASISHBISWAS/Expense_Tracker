@@ -1,5 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { catchError, EMPTY, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  EMPTY,
+  map,
+  mergeWith,
+  Observable,
+  Subject,
+} from 'rxjs';
+import {
+  combineLatest,
+  combineLatestInit,
+} from 'rxjs/internal/observable/combineLatest';
 import { CardService } from '../card.service';
 import { Card } from '../models/card';
 
@@ -12,14 +24,33 @@ import { Card } from '../models/card';
 export class DisplayCardsComponent implements OnInit {
   userAuthenticated: boolean = true;
   errorMessage: string = '';
+  cardTypeSelectedSubject = new BehaviorSubject<string>('');
+  cardTypeSelectedAction$ = this.cardTypeSelectedSubject.asObservable();
 
-  public cards$ = this.cardService.cards$.pipe(
+  cards$ = combineLatest([
+    this.cardService.cardWithCreateAction$,
+    this.cardTypeSelectedAction$,
+  ]).pipe(
+    map(([cards, cardTypeSelected]) => {
+      return cards.filter((card) =>
+        cardTypeSelected ? card.cardType === cardTypeSelected : true
+      );
+    }),
     catchError((err) => {
       this.errorMessage = err;
       this.userAuthenticated = false;
       return EMPTY;
     })
   );
+  /*
+  public cards$ = this.cardService.cardWithCreateAction$.pipe(
+    catchError((err) => {
+      this.errorMessage = err;
+      this.userAuthenticated = false;
+      return EMPTY;
+    })
+  );
+*/
 
   constructor(private cardService: CardService) {}
 

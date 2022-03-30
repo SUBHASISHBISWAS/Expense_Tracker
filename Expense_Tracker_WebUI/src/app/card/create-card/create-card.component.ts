@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, map } from 'rxjs';
+import { CardService } from '../card.service';
 
 @Component({
   selector: 'app-create-card',
@@ -14,7 +17,7 @@ export class CreateCardComponent implements OnInit {
     { value: 'MASTER', viewValue: 'MASTER' },
     { value: 'AMEX', viewValue: 'AMEX' },
   ];
-  constructor() {}
+  constructor(private cardService: CardService, public route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.cardForm = new FormGroup({
@@ -43,9 +46,7 @@ export class CreateCardComponent implements OnInit {
     if (!this.cardForm.valid) {
       return;
     }
-    console.log(this.cardForm.value);
-    console.log(this.selectedCard);
-    console.log(this.cardForm.value?.cardStatement);
+    this.cardService.createCard(this.cardForm.value);
   }
 
   onCardExpiryDateChange(event: any): void {
@@ -54,6 +55,26 @@ export class CreateCardComponent implements OnInit {
   onCardStatementDateChange(event: any): void {
     console.log(event.target.value);
   }
+  userAuthenticated: boolean = true;
+  errorMessage: string = '';
+  cardTypeSelectedSubject = new BehaviorSubject<string>('');
+  cardTypeSelectedAction$ = this.cardTypeSelectedSubject.asObservable();
+
+  cards$ = combineLatest([
+    this.cardService.cardWithCreateAction$,
+    this.cardTypeSelectedAction$,
+  ]).pipe(
+    map(([cards, cardTypeSelected]) => {
+      return cards.filter((card) =>
+        cardTypeSelected ? card.cardType === cardTypeSelected : true
+      );
+    }),
+    catchError((err) => {
+      this.errorMessage = err;
+      this.userAuthenticated = false;
+      return EMPTY;
+    })
+  );
 }
 
 interface CardType {

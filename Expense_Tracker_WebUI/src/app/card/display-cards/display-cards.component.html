@@ -6,8 +6,10 @@
 
     <p>{{ card.cardNumber }}</p>
     <mat-action-row *ngIf="userAuthenticated">
-      <a mat-button color="primary" [routerLink]="['/edit', card.id]">EDIT</a>
-      <button mat-button color="warn" (click)="onDelete(card.id)">
+      <a mat-button color="primary" [routerLink]="['/edit', card.cardId]"
+        >EDIT</a
+      >
+      <button mat-button color="warn" (click)="onDelete(card.cardId)">
         DELETE
       </button>
     </mat-action-row>
