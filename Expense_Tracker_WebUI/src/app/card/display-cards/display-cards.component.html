@@ -1,0 +1,15 @@
+<mat-accordion *ngIf="cards$ | async as cards">
+  <mat-expansion-panel *ngFor="let card of cards">
+    <mat-expansion-panel-header>
+      {{ card.cardName }}
+    </mat-expansion-panel-header>
+
+    <p>{{ card.cardNumber }}</p>
+    <mat-action-row *ngIf="userAuthenticated">
+      <a mat-button color="primary" [routerLink]="['/edit', card.id]">EDIT</a>
+      <button mat-button color="warn" (click)="onDelete(card.id)">
+        DELETE
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
