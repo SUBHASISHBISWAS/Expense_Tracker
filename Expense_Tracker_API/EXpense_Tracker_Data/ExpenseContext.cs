@@ -13,7 +13,7 @@ namespace Expense_Tracker_Data
 
         public DbSet<Card>? Cards { get; set; }
 
-        public ExpenseContext(DbContextOptions<ExpenseContext> option) : base(option) { }
+        //public ExpenseContext(DbContextOptions<ExpenseContext> option) : base(option) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=192.168.1.28,1433;Initial Catalog=Expense;User ID=sa;Password=SqlServer@2019");
