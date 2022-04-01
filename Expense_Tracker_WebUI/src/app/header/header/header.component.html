@@ -9,6 +9,11 @@
         >Create Card</a
       >
     </li>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="expense/create" routerLinkActive="mat-accent"
+        >Create Expense</a
+      >
+    </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="auth/login" routerLinkActive="mat-accent"
         >Login</a

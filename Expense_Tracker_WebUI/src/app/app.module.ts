@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderModule } from './header/header.module';
 import { MatSliderModule } from '@angular/material/slider';
 import { CardModule } from './card/card.module';
+import { ExpenseModule } from './expense/expense.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { CardModule } from './card/card.module';
     HeaderModule,
     MatSliderModule,
     CardModule,
+    ExpenseModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

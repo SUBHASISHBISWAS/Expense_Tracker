@@ -40,6 +40,7 @@ export class CardService {
 
   cardsWithCreateCardAction$ = merge(this.cards$, this.createCardAction$).pipe(
     scan((acc, value) => {
+      console.log('Hello');
       return value instanceof Array ? [...value] : [...acc, value];
     }, [] as Card[])
   );

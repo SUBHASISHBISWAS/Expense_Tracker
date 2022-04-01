@@ -55,6 +55,26 @@ export class CreateCardComponent implements OnInit {
   onCardStatementDateChange(event: any): void {
     console.log(event.target.value);
   }
+  userAuthenticated: boolean = true;
+  errorMessage: string = '';
+  cardTypeSelectedSubject = new BehaviorSubject<string>('');
+  cardTypeSelectedAction$ = this.cardTypeSelectedSubject.asObservable();
+
+  cards$ = combineLatest([
+    this.cardService.cardsWithCreateCardAction$,
+    this.cardTypeSelectedAction$,
+  ]).pipe(
+    map(([cards, cardTypeSelected]) => {
+      return cards.filter((card) =>
+        cardTypeSelected ? card.cardType === cardTypeSelected : true
+      );
+    }),
+    catchError((err) => {
+      this.errorMessage = err;
+      this.userAuthenticated = false;
+      return EMPTY;
+    })
+  );
 }
 
 interface CardType {
