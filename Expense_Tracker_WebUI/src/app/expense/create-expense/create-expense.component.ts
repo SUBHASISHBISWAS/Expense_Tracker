@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, catchError, combineLatest, EMPTY, map } from 'rxjs';
 import { CardService } from 'src/app/card/card.service';
 import { ExpenseService } from '../expense.service';
 
@@ -9,6 +10,8 @@ import { ExpenseService } from '../expense.service';
   styleUrls: ['./create-expense.component.css'],
 })
 export class CreateExpenseComponent implements OnInit {
+  userAuthenticated: boolean = true;
+  errorMessage: string = '';
   public expenseForm!: FormGroup;
   selectedCard: string = '';
   selectedCategory: string = '';
@@ -17,6 +20,25 @@ export class CreateExpenseComponent implements OnInit {
     { value: 'MASTER', viewValue: 'MASTER' },
     { value: 'AMEX', viewValue: 'AMEX' },
   ];
+  expenseTypeSelectedSubject = new BehaviorSubject<string>('');
+  cardTypeSelectedAction$ = this.expenseTypeSelectedSubject.asObservable();
+
+  expenses$ = combineLatest([
+    this.expenseService.expensesWithCreateExpenseAction$,
+    this.cardTypeSelectedAction$,
+  ]).pipe(
+    map(([expenses, cardTypeSelected]) =>
+      expenses.filter((expense) =>
+        cardTypeSelected ? expense.expenseCategory === cardTypeSelected : true
+      )
+    ),
+    catchError((err) => {
+      this.errorMessage = err;
+      this.userAuthenticated = false;
+      return EMPTY;
+    })
+  );
+
   cards$ = this.cardService.cardsWithCreateCardAction$;
 
   constructor(
@@ -43,6 +65,8 @@ export class CreateExpenseComponent implements OnInit {
     }
     this.expenseService.createExpense(this.expenseForm.value);
   }
+
+  onDelete(expenseId: any) {}
 }
 interface CardType {
   value: string;
