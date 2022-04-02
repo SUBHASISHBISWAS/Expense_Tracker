@@ -23,12 +23,17 @@ export class ExpenseService {
       'MM/dd/yyyy'
     );
     const expenseData = new FormData();
-    expenseData.append('cardName', expense!.expenseDescription);
-    expenseData.append('cardNumber', expense!.expenseAmount);
-    expenseData.append('cardDescription', expense!.expenseCard!);
-    expenseData.append('cardType', expense!.expenseCategory);
-    expenseData.append('cardExpiryDate', expenseDate!);
+    expenseData.append('description', expense!.expenseDescription);
+    expenseData.append('amount', expense!.expenseAmount);
+    expenseData.append('cardId', expense!.expenseCard!);
+    expenseData.append('expenseCategory', expense!.expenseCategory);
+    expenseData.append('createdDate', expenseDate!);
     console.log(expense!.expenseCard!);
-    //this.http.post<any>('http://localhost:5099/api/Expense', expenseDate);
+    console.log(JSON.stringify(expenseData));
+    this.http
+      .post<any>('http://localhost:5099/api/Expenses', expenseData)
+      .subscribe((expense) => {
+        console.log('created expense', JSON.stringify(expense));
+      });
   }
 }

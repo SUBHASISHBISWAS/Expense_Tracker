@@ -8,7 +8,9 @@
 
         public decimal ? Amount { get; set; }
 
-        public DateTime? CreatedDate { get; set;}
+        public DateTime? expenseDate { get; set;}
+
+        public string? expenseCategory { get; set; }
 
         //public Guid UserId { get; set; }
 
