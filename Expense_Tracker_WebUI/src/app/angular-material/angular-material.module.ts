@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 @NgModule({
   exports: [
     MatInputModule,
@@ -23,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatTableModule,
   ],
 })
 export class AngularMaterialModule {}

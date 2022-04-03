@@ -27,8 +27,11 @@ export class ExpenseService {
     private cardService: CardService
   ) {}
 
+  private expenseDeleteSubject = new Subject<any>();
+  expenseDeleteAction$ = this.expenseDeleteSubject.asObservable();
   private expenseCreatedSubject = new Subject<Expense>();
-  private createExpenseAction$ = this.expenseCreatedSubject.asObservable();
+  createExpenseAction$ = this.expenseCreatedSubject.asObservable();
+
   private expenses$ = this.http
     .get<any[]>('http://localhost:5099/api/Expenses')
     .pipe(
@@ -47,11 +50,13 @@ export class ExpenseService {
       )
     );
 
-  cards$ = this.cardService.cardsWithCreateCardAction$;
-
-  expenseWithCard$ = combineLatest([this.expenses$, this.cards$]).pipe(
+  expenseWithCard$ = combineLatest([
+    this.expenses$,
+    this.cardService.cards$,
+  ]).pipe(
     map(([expenses, cards]) => {
       return expenses.map((expense) => {
+        console.log('first');
         return {
           ...expense,
           expenseCard: cards.find((card) => card.cardId === expense.cardId)
@@ -66,7 +71,7 @@ export class ExpenseService {
     this.createExpenseAction$
   ).pipe(
     scan((acc, value) => {
-      console.log('Hello');
+      console.log('Hello' + [...acc]);
       return value instanceof Array ? [...value] : [...acc, value];
     }, [] as Expense[])
   );
@@ -90,13 +95,22 @@ export class ExpenseService {
         map((expense) => {
           return {
             ...expense,
-            expenseId: expense.Id,
+            expenseId: expense.id,
           } as Expense;
         })
       )
       .subscribe((expense) => {
         console.log('created expense', JSON.stringify(expense));
         this.expenseCreatedSubject.next(expense);
+      });
+  }
+
+  deleteExpense(expenseId: any) {
+    this.http
+      .delete<any>(`http://localhost:5099/api/Expenses/${expenseId}`)
+      .subscribe((expense) => {
+        console.log('deleted expense', JSON.stringify(expenseId));
+        this.expenseDeleteSubject.next(expenseId);
       });
   }
 

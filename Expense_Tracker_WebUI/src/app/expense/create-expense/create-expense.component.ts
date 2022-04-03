@@ -55,6 +55,13 @@ export class CreateExpenseComponent implements OnInit {
       expenseCategory: ['', [Validators.required, Validators.minLength(0)]],
       expenseCard: ['', [Validators.required, Validators.minLength(0)]],
     });
+    this.expenseService.expenseDeleteAction$.subscribe((expenseId) => {
+      this.expenses$ = this.expenses$.pipe(
+        map((expenses) =>
+          expenses.filter((expense) => expense.expenseId !== expenseId)
+        )
+      );
+    });
   }
 
   onExpenseDateChange(event: any) {}
@@ -66,7 +73,9 @@ export class CreateExpenseComponent implements OnInit {
     this.expenseService.createExpense(this.expenseForm.value);
   }
 
-  onDelete(expenseId: any) {}
+  onDelete(expenseId: any) {
+    this.expenseService.deleteExpense(expenseId);
+  }
 }
 interface CardType {
   value: string;

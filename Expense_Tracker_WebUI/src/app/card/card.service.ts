@@ -24,7 +24,7 @@ import { DatePipe } from '@angular/common';
 export class CardService {
   private cardCreatedSubject = new Subject<Card>();
   private createCardAction$ = this.cardCreatedSubject.asObservable();
-  private cards$ = this.http.get<any[]>('http://localhost:5099/api/Cards').pipe(
+  cards$ = this.http.get<any[]>('http://localhost:5099/api/Cards').pipe(
     map((cards) =>
       cards.map(
         (card) =>

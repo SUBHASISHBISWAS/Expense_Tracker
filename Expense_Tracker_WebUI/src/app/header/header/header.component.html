@@ -14,6 +14,11 @@
         >Create Expense</a
       >
     </li>
+    <li *ngIf="userIsAuthenticated">
+      <a mat-button routerLink="expense/display" routerLinkActive="mat-accent"
+        >Display Expense</a
+      >
+    </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="auth/login" routerLinkActive="mat-accent"
         >Login</a
