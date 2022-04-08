@@ -51,4 +51,5 @@ export class DisplayExpenseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+  applyFilter(event: any) {}
 }
